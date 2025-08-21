@@ -38,12 +38,19 @@ const convertToCSV = (data) => {
         window.URL.revokeObjectURL(url);
     };
 
-    const formatFrameDataForCSV = (processedResponse, timestamp, frameNumber) => {
+    const formatFrameDataForCSV = (processedResponse, timestamp, frameNumber, sessionStartTime = null) => {
+        // sessionStartTime can be a raw timestamp/Date or a ref object with .current
+        const resolvedStart = sessionStartTime && typeof sessionStartTime === 'object' && 'current' in sessionStartTime
+            ? sessionStartTime.current
+            : sessionStartTime;
+        const sessionDuration = resolvedStart
+            ? Math.round((new Date(timestamp) - new Date(resolvedStart)) / 1000)
+            : 0;
+
         const baseData = {
             frameNumber,
             timestamp,
-            sessionDuration: sessionStartTimeRef.current ? 
-                Math.round((new Date(timestamp) - sessionStartTimeRef.current) / 1000) : 0,
+            sessionDuration,
             
             // Overall metrics
             overallEngagement: processedResponse.metrics?.engagement || 0,

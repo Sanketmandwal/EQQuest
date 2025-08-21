@@ -6,7 +6,8 @@ import {
   useUser,
 } from "@clerk/clerk-react";
 import Navbar from './Navbar';
-import Interview from './Interview';
+// import Interview from './Interview';
+import Interview from '@/components/Interview/Interview';
 import AboutUs from './Aboutus';
 import Landing from './Landing';
 import ContactUs from './Contactus';
